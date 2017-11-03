@@ -56,5 +56,36 @@ namespace BandTracker.Tests
       //Assert
       CollectionAssert.AreEqual(testList, result);
     }
+
+    [TestMethod]
+    public void Save_AssignsIdToObject_id()
+    {
+      //Arrange
+      Band testBand = new Band("Depeche Mode");
+      testBand.Save();
+
+      //Act
+      Band savedBand = Band.GetAll()[0];
+
+      int result = savedBand.GetId();
+      int testId = testBand.GetId();
+
+      //Assert
+      Assert.AreEqual(testId, result);
+    }
+
+    [TestMethod]
+    public void Find_FindsBandInDatabase_Band()
+    {
+      //Arrange
+      Band testBand = new Band("Depeche Mode", 1);
+      testBand.Save();
+
+      //Act
+      Band result = Band.Find(testBand.GetId());
+
+      //Assert
+      Assert.AreEqual(testBand, result);
+    }
   }
 }
