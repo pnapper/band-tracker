@@ -105,7 +105,7 @@ namespace BandTracker.Controllers
     }
 
     //EDIT VENUE
-    [HttpGet("/venues/{venueId}/edit")]
+    [HttpGet("/venues/{id}/edit")]
     public ActionResult VenueEdit(int id)
     {
       Venue thisVenue = Venue.Find(id);
@@ -113,7 +113,7 @@ namespace BandTracker.Controllers
       return View(thisVenue);
     }
 
-    [HttpPost("/venues/{venueId}/edit")]
+    [HttpPost("/venues/{id}/edit")]
     public ActionResult VenueEditConfirm(int id)
     {
       Venue thisVenue = Venue.Find(id);
