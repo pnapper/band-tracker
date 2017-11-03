@@ -1,0 +1,10 @@
+<h1>Add Band for @Model.GetBandName()</h1>
+
+<form action="/@Model.GetBandName()/@Model.GetId()/bandlist" method="post">
+  <label for="band-name">New Band</label>
+  <input type="text" name="band-name" class="form-control">
+  <button type="submit" name="button">Add Band</button>
+</form>
+
+<a href="/@Model.GetBandName()/@Model.GetId()/bandlist">View Band List</a><br>
+<a href="/">HomePage</a>
