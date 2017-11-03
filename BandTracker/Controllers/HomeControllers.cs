@@ -55,5 +55,53 @@ namespace BandTracker.Controllers
       newVenue.Save();
       return View("Success");
     }
+
+    //ONE BAND
+    [HttpGet("/bands/{id}")]
+    public ActionResult BandDetail(int id)
+    {
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Band selectedBand = Band.Find(id);
+      List<Venue> BandVenues = selectedBand.GetVenues();
+      List<Venue> AllVenues = Venue.GetAll();
+      model.Add("band", selectedBand);
+      model.Add("bandVenues", BandVenues);
+      model.Add("allVenues", AllVenues);
+      return View("BandDetail", model);
+    }
+
+    //ONE VENUE
+    [HttpGet("/venues/{id}")]
+    public ActionResult VenueDetail(int id)
+    {
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Venue SelectedVenue = Venue.Find(id);
+      List<Band> VenueBands = SelectedVenue.GetBands();
+      List<Band> AllBands = Band.GetAll();
+      model.Add("venue", SelectedVenue);
+      model.Add("venueBands", VenueBands);
+      model.Add("allBands", AllBands);
+      return View(model);
+    }
+
+    //ADD BAND TO VENUE
+    [HttpPost("venues/{venueId}/bands/new")]
+    public ActionResult VenueAddBand(int venueId)
+    {
+      Venue venue = Venue.Find(venueId);
+      Band band = Band.Find(Int32.Parse(Request.Form["band-id"]));
+      venue.AddBand(band);
+      return View("Success");
+    }
+    
+    //ADD VENUE TO BAND
+    [HttpPost("bands/{bandId}/venues/new")]
+    public ActionResult BandAddVenue(int bandId)
+    {
+      Band band = Band.Find(bandId);
+      Venue venue = Venue.Find(Int32.Parse(Request.Form["venue-id"]));
+      band.AddVenue(venue);
+      return View("Success");
+    }
   }
 }

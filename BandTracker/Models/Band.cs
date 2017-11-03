@@ -121,6 +121,82 @@ namespace BandTracker.Models
       return newBand;
     }
 
+    public void AddVenue(Venue newVenue)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO bands_venues (venue_id, band_id) VALUES (@VenueId, @BandId);";
+
+      MySqlParameter venue_id = new MySqlParameter();
+      venue_id.ParameterName = "@VenueId";
+      venue_id.Value = newVenue.GetId();
+      cmd.Parameters.Add(venue_id);
+
+      MySqlParameter band_id = new MySqlParameter();
+      band_id.ParameterName = "@BandId";
+      band_id.Value = _id;
+      cmd.Parameters.Add(band_id);
+
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public List<Venue> GetVenues()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT venue_id FROM bands_venues WHERE band_id = @bandId;";
+
+      MySqlParameter bandIdParameter = new MySqlParameter();
+      bandIdParameter.ParameterName = "@bandId";
+      bandIdParameter.Value = _id;
+      cmd.Parameters.Add(bandIdParameter);
+
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+      List<int> venueIds = new List<int> {};
+      while(rdr.Read())
+      {
+        int venueId = rdr.GetInt32(0);
+        venueIds.Add(venueId);
+      }
+      rdr.Dispose();
+
+      List<Venue> venues = new List<Venue> {};
+      foreach (int venueId in venueIds)
+      {
+        var venueQuery = conn.CreateCommand() as MySqlCommand;
+        venueQuery.CommandText = @"SELECT * FROM venues WHERE id = @VenueId;";
+
+        MySqlParameter venueIdParameter = new MySqlParameter();
+        venueIdParameter.ParameterName = "@VenueId";
+        venueIdParameter.Value = venueId;
+        venueQuery.Parameters.Add(venueIdParameter);
+
+        var venueQueryRdr = venueQuery.ExecuteReader() as MySqlDataReader;
+        while(venueQueryRdr.Read())
+        {
+          int thisVenueId = venueQueryRdr.GetInt32(0);
+          string venueName = venueQueryRdr.GetString(1);
+          Venue foundVenue = new Venue(venueName, thisVenueId);
+          venues.Add(foundVenue);
+        }
+        venueQueryRdr.Dispose();
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return venues;
+    }
+
     public static void DeleteAll()
     {
       MySqlConnection conn = DB.Connection();
