@@ -1,0 +1,11 @@
+<h1>Band Tracker</h1>
+<hr />
+<h2>Edit venue: @Model.GetVenueName()</h2>
+<form action="/venues/@Model.GetId()/edit" method="post">
+  <label for="new-name">Name:</label>
+  <input type="text" name="new-name" value="@Model.GetVenueName()">
+  <button type="submit">Edit</button>
+</form>
+
+
+<h4<a href="/">Return to homepage</a></h4>

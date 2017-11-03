@@ -25,50 +25,68 @@ namespace BandTracker.Tests
     }
 
     [TestMethod]
-      public void Save_SavesVenueToDatabase_VenueList()
-      {
-        //Arrange
-        Venue testVenue = new Venue("Key Arena");
-        testVenue.Save();
+    public void Save_SavesVenueToDatabase_VenueList()
+    {
+      //Arrange
+      Venue testVenue = new Venue("Key Arena");
+      testVenue.Save();
 
-        //Act
-        List<Venue> result = Venue.GetAll();
-        List<Venue> testList = new List<Venue>{testVenue};
+      //Act
+      List<Venue> result = Venue.GetAll();
+      List<Venue> testList = new List<Venue>{testVenue};
 
-        //Assert
-        CollectionAssert.AreEqual(testList, result);
-      }
+      //Assert
+      CollectionAssert.AreEqual(testList, result);
+    }
 
-      [TestMethod]
-      public void Save_DatabaseAssignsIdToVenue_Id()
-      {
-        //Arrange
-        Venue testVenue = new Venue("Key Arena");
-        testVenue.Save();
+    [TestMethod]
+    public void Save_DatabaseAssignsIdToVenue_Id()
+    {
+      //Arrange
+      Venue testVenue = new Venue("Key Arena");
+      testVenue.Save();
 
-        //Act
-        Venue savedVenue = Venue.GetAll()[0];
+      //Act
+      Venue savedVenue = Venue.GetAll()[0];
 
-        int result = savedVenue.GetId();
-        int testId = testVenue.GetId();
+      int result = savedVenue.GetId();
+      int testId = testVenue.GetId();
 
-        //Assert
-        Assert.AreEqual(testId, result);
-      }
+      //Assert
+      Assert.AreEqual(testId, result);
+    }
 
-      [TestMethod]
-      public void Find_FindsCourseInDatabase_Venue()
-      {
-        //Arrange
-        Venue testVenue = new Venue("Key Arena");
-        testVenue.Save();
+    [TestMethod]
+    public void Find_FindsCourseInDatabase_Venue()
+    {
+      //Arrange
+      Venue testVenue = new Venue("Key Arena");
+      testVenue.Save();
 
-        //Act
-        Venue foundVenue = Venue.Find(testVenue.GetId());
+      //Act
+      Venue foundVenue = Venue.Find(testVenue.GetId());
 
-        //Assert
-        Assert.AreEqual(testVenue, foundVenue);
-      }
+      //Assert
+      Assert.AreEqual(testVenue, foundVenue);
+    }
+
+    [TestMethod]
+    public void Update_UpdatesVenueInDatabase_String()
+    {
+      // Arrange
+      string venueName = "Key Arena";
+      Venue testVenue = new Venue(venueName);
+      testVenue.Save();
+      string newName = "Paramount Theater";
+
+      // Act
+      testVenue.UpdateName(newName);
+
+      string result = Venue.Find(testVenue.GetId()).GetVenueName();
+
+      // Assert
+      Assert.AreEqual(newName, result);
+    }
 
     public void Dispose()
     {

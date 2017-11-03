@@ -93,7 +93,7 @@ namespace BandTracker.Controllers
       venue.AddBand(band);
       return View("Success");
     }
-    
+
     //ADD VENUE TO BAND
     [HttpPost("bands/{bandId}/venues/new")]
     public ActionResult BandAddVenue(int bandId)
@@ -102,6 +102,34 @@ namespace BandTracker.Controllers
       Venue venue = Venue.Find(Int32.Parse(Request.Form["venue-id"]));
       band.AddVenue(venue);
       return View("Success");
+    }
+
+    //EDIT VENUE
+    [HttpGet("/venues/{venueId}/edit")]
+    public ActionResult VenueEdit(int id)
+    {
+      Venue thisVenue = Venue.Find(id);
+
+      return View(thisVenue);
+    }
+
+    [HttpPost("/venues/{venueId}/edit")]
+    public ActionResult VenueEditConfirm(int id)
+    {
+      Venue thisVenue = Venue.Find(id);
+      thisVenue.UpdateName(Request.Form["new-name"]);
+
+      return RedirectToAction("Index");
+    }
+
+    [HttpGet("/{name}/{id}/venue/delete")]
+    public ActionResult VenueDelete(int id)
+    {
+      // Cuisine is selected as an object
+      Venue thisVenue = Venue.Find(id);
+      thisVenue.DeleteVenue();
+
+      return RedirectToAction("Index");
     }
   }
 }
