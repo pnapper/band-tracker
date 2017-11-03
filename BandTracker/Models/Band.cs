@@ -75,10 +75,10 @@ namespace BandTracker.Models
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"INSERT INTO bands (name) VALUES (@name);";
 
-      MySqlParameter name = new MySqlParameter();
-      name.ParameterName = "@name";
-      name.Value = this._bandName;
-      cmd.Parameters.Add(name);
+      MySqlParameter bandName = new MySqlParameter();
+      bandName.ParameterName = "@name";
+      bandName.Value = this._bandName;
+      cmd.Parameters.Add(bandName);
 
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
