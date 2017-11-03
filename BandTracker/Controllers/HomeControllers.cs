@@ -81,11 +81,11 @@ namespace BandTracker.Controllers
       model.Add("venue", SelectedVenue);
       model.Add("venueBands", VenueBands);
       model.Add("allBands", AllBands);
-      return View(model);
+      return View("VenueDetail", model);
     }
 
     //ADD BAND TO VENUE
-    [HttpPost("venues/{venueId}/bands/new")]
+    [HttpPost("/venues/{venueId}/bands/new")]
     public ActionResult VenueAddBand(int venueId)
     {
       Venue venue = Venue.Find(venueId);
@@ -95,7 +95,7 @@ namespace BandTracker.Controllers
     }
 
     //ADD VENUE TO BAND
-    [HttpPost("bands/{bandId}/venues/new")]
+    [HttpPost("/bands/{bandId}/venues/new")]
     public ActionResult BandAddVenue(int bandId)
     {
       Band band = Band.Find(bandId);

@@ -24,7 +24,9 @@ namespace BandTracker.Models
       else
       {
         Venue newVenue = (Venue) otherVenue;
-        return this.GetId().Equals(newVenue.GetId());
+        bool idEquality = (this.GetId() == newVenue.GetId());
+        bool nameEquality = (this.GetVenueName() == newVenue.GetVenueName());
+        return (idEquality && nameEquality);
       }
     }
 
@@ -155,10 +157,10 @@ namespace BandTracker.Models
       JOIN bands ON (bands_venues.band_id = bands.id)
       WHERE venues.id = @VenueId;";
 
-      MySqlParameter venueIdParameter = new MySqlParameter();
-      venueIdParameter.ParameterName = "@VenueId";
-      venueIdParameter.Value = _id;
-      cmd.Parameters.Add(venueIdParameter);
+      MySqlParameter bandIdParameter = new MySqlParameter();
+      bandIdParameter.ParameterName = "@VenueId";
+      bandIdParameter.Value = _id;
+      cmd.Parameters.Add(bandIdParameter);
 
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       List<Band> bands = new List<Band>{};
