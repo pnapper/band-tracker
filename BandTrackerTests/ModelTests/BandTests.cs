@@ -30,5 +30,31 @@ namespace BandTracker.Tests
       //Assert
       Assert.AreEqual(0, result);
     }
+
+    [TestMethod]
+    public void Equals_OverrideTrueIfNamesAreTheSame_Band()
+    {
+      // Arrange, Act
+      Band firstBand = new Band("Depeche Mode");
+      Band secondBand = new Band("Depeche Mode");
+
+      // Assert
+      Assert.AreEqual(firstBand, secondBand);
+    }
+
+    [TestMethod]
+    public void Save_SavesToDatabase_BandList()
+    {
+      //Arrange
+      Band testBand = new Band("Depeche Mode");
+
+      //Act
+      testBand.Save();
+      List<Band> result = Band.GetAll();
+      List<Band> testList = new List<Band>{testBand};
+
+      //Assert
+      CollectionAssert.AreEqual(testList, result);
+    }
   }
 }
