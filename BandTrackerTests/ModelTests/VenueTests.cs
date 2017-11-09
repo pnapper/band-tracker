@@ -88,6 +88,26 @@ namespace BandTracker.Tests
       Assert.AreEqual(newName, result);
     }
 
+    [TestMethod]
+    public void AddBand_AddsBandToVenue_True()
+    {
+      // Arrange
+
+      Venue testVenue = new Venue("Key Arena");
+      testVenue.Save();
+      Band testBand = new Band("U2");
+      testBand.Save();
+
+      // Act
+      testVenue.AddBand(testBand);
+
+      List<Band> result = testVenue.GetBands();
+      List<Band> testList = new List<Band>{testBand};
+
+      // Assert
+      CollectionAssert.AreEqual(testList, result);
+    }
+
     public void Dispose()
     {
       Band.DeleteAll();

@@ -15,12 +15,6 @@ namespace BandTracker.Tests
         DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=band_tracker_test;";
     }
 
-    public void Dispose()
-    {
-      Band.DeleteAll();
-      Venue.DeleteAll();
-    }
-
     [TestMethod]
     public void GetAll_DatabaseEmptyAtFirst_0()
     {
@@ -86,6 +80,32 @@ namespace BandTracker.Tests
 
       //Assert
       Assert.AreEqual(testBand, result);
+    }
+
+    [TestMethod]
+    public void AddVenue_AddsVenueToBand_True()
+    {
+      // Arrange
+
+      Band testBand = new Band("U2");
+      testBand.Save();
+      Venue testVenue = new Venue("Key Arena");
+      testVenue.Save();
+
+      // Act
+      testBand.AddVenue(testVenue);
+
+      List<Venue> result = testBand.GetVenues();
+      List<Venue> testList = new List<Venue>{testVenue};
+
+      // Assert
+      CollectionAssert.AreEqual(testList, result);
+    }
+
+    public void Dispose()
+    {
+      Band.DeleteAll();
+      Venue.DeleteAll();
     }
   }
 }
